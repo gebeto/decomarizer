@@ -9,7 +9,7 @@
  * `./src/main.js` using webpack. This gives us some performance wins.
  */
 import path from 'path';
-import { app, BrowserWindow, shell, ipcMain } from 'electron';
+import { app, BrowserWindow, shell, ipcMain, screen } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
@@ -69,12 +69,16 @@ const createWindow = async () => {
     return path.join(RESOURCES_PATH, ...paths);
   };
 
+  const primaryDisplay = screen.getPrimaryDisplay();
+  const { width } = primaryDisplay.workAreaSize;
+
   mainWindow = new BrowserWindow({
     frame: false,
     titleBarStyle: 'customButtonsOnHover',
     // alwaysOnTop: true,
-    x: 24,
-    y: 56,
+    // x: 24,
+    x: width - 400 - 24,
+    y: 32,
     show: false,
     width: 400,
     // width: 1024,
