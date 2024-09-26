@@ -70,9 +70,15 @@ const createWindow = async () => {
   };
 
   mainWindow = new BrowserWindow({
+    frame: false,
+    titleBarStyle: 'customButtonsOnHover',
+    // alwaysOnTop: true,
+    x: 24,
+    y: 56,
     show: false,
-    width: 1024,
-    height: 728,
+    width: 400,
+    // width: 1024,
+    height: 512,
     icon: getAssetPath('icon.png'),
     webPreferences: {
       preload: app.isPackaged

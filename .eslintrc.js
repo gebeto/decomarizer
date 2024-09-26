@@ -3,6 +3,8 @@ module.exports = {
   plugins: ['@typescript-eslint'],
   rules: {
     // A temporary hack related to IDE not resolving correct package.json
+    'react/function-component-definition': 'off',
+    'import/prefer-default-export': 'off',
     'import/no-extraneous-dependencies': 'off',
     'react/react-in-jsx-scope': 'off',
     'react/jsx-filename-extension': 'off',

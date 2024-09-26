@@ -1,41 +1,73 @@
+import React, { ChangeEvent } from 'react';
 import { MemoryRouter as Router, Routes, Route } from 'react-router-dom';
-import icon from '../../assets/icon.svg';
 import './App.css';
+import {
+  Textarea,
+  Heading,
+  Pane,
+  Button,
+  SideSheet,
+  Position,
+} from 'evergreen-ui';
+import { ToDoList } from './ToDoList';
+
+const ToDoSection: React.FC<{ label: string }> = ({ label }) => {
+  const [isAdding, setIsAdding] = React.useState(false);
+  const [tasks, setTasks] = React.useState<string[]>([]);
+  const [addValue, setAddValue] = React.useState('');
+  const handleAdd = () => {
+    setTasks([...tasks, addValue]);
+    setIsAdding(false);
+    setAddValue('');
+  };
+  return (
+    <>
+      <Heading size={500}>In Progress</Heading>
+      <ToDoList tasks={tasks} />
+      <Button onClick={() => setIsAdding(true)}>Add task</Button>
+      <SideSheet
+        position={Position.BOTTOM}
+        isShown={!!isAdding}
+        onCloseComplete={() => setIsAdding(false)}
+      >
+        <Pane padding={8}>
+          <Heading size={500} marginBottom={8}>
+            {label}
+          </Heading>
+          <Textarea
+            value={addValue}
+            onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
+              setAddValue(e.target.value)
+            }
+            autoFocus
+            minHeight="auto"
+            placeholder="add task"
+            onKeyDown={(e) => {
+              if (e.metaKey && e.key === 'Enter') {
+                handleAdd();
+              }
+            }}
+          />
+          <Button width="100%" appearance="primary" onClick={handleAdd}>
+            Add
+          </Button>
+        </Pane>
+      </SideSheet>
+    </>
+  );
+};
 
 function Hello() {
   return (
-    <div>
-      <div className="Hello">
-        <img width="200" alt="icon" src={icon} />
-      </div>
-      <h1>electron-react-boilerplate</h1>
-      <div className="Hello">
-        <a
-          href="https://electron-react-boilerplate.js.org/"
-          target="_blank"
-          rel="noreferrer"
-        >
-          <button type="button">
-            <span role="img" aria-label="books">
-              📚
-            </span>
-            Read our docs
-          </button>
-        </a>
-        <a
-          href="https://github.com/sponsors/electron-react-boilerplate"
-          target="_blank"
-          rel="noreferrer"
-        >
-          <button type="button">
-            <span role="img" aria-label="folded hands">
-              🙏
-            </span>
-            Donate
-          </button>
-        </a>
-      </div>
-    </div>
+    <Pane display="flex" flexDirection="column">
+      <Pane border="muted" display="flex" flexDirection="column" padding={16}>
+        <ToDoSection label="In Progress" />
+      </Pane>
+      <Pane border="muted" display="flex" flexDirection="column" padding={16}>
+        <ToDoSection label="Plan" />
+      </Pane>
+      <Pane height="63px" />
+    </Pane>
   );
 }
 
