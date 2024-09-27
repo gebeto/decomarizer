@@ -9,7 +9,14 @@
  * `./src/main.js` using webpack. This gives us some performance wins.
  */
 import path from 'path';
-import { app, BrowserWindow, shell, ipcMain, screen } from 'electron';
+import {
+  app,
+  BrowserWindow,
+  shell,
+  ipcMain,
+  screen,
+  globalShortcut,
+} from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
@@ -131,6 +138,15 @@ app.on('window-all-closed', () => {
   // after all windows have been closed
   if (process.platform !== 'darwin') {
     app.quit();
+  }
+});
+
+app.on('ready', () => {
+  const sh = globalShortcut.register('Shift+Space', () => {
+    mainWindow?.show();
+  });
+  if (!sh) {
+    console.log('Registration failed.');
   }
 });
 
