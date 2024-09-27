@@ -22,7 +22,7 @@ const ToDoSection: React.FC<{ label: string }> = ({ label }) => {
   };
   return (
     <>
-      <Heading size={500}>In Progress</Heading>
+      <Heading size={500}>{label}</Heading>
       <ToDoList tasks={tasks} />
       <Button onClick={() => setIsAdding(true)}>Add task</Button>
       <SideSheet
@@ -30,7 +30,7 @@ const ToDoSection: React.FC<{ label: string }> = ({ label }) => {
         isShown={!!isAdding}
         onCloseComplete={() => setIsAdding(false)}
       >
-        <Pane padding={8}>
+        <Pane padding={8} height="80vh">
           <Heading size={500} marginBottom={8}>
             {label}
           </Heading>
@@ -60,10 +60,23 @@ const ToDoSection: React.FC<{ label: string }> = ({ label }) => {
 function Hello() {
   return (
     <Pane display="flex" flexDirection="column">
-      <Pane border="muted" display="flex" flexDirection="column" padding={16}>
+      <Pane
+        border="muted"
+        borderTop={false}
+        borderBottom={false}
+        display="flex"
+        flexDirection="column"
+        padding={16}
+      >
         <ToDoSection label="In Progress" />
       </Pane>
-      <Pane border="muted" display="flex" flexDirection="column" padding={16}>
+      <Pane
+        border="muted"
+        display="flex"
+        flexDirection="column"
+        padding={16}
+        borderBottom={false}
+      >
         <ToDoSection label="Plan" />
       </Pane>
       <Pane height="63px" />

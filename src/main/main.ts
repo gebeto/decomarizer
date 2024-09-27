@@ -90,6 +90,8 @@ const createWindow = async () => {
     width: 400,
     // width: 1024,
     height: 512,
+    // transparent: true,
+    // backgroundColor: 'rgba(255, 255, 255, 0.98)',
     icon: getAssetPath('icon.png'),
     webPreferences: {
       preload: app.isPackaged
@@ -133,6 +135,7 @@ const createWindow = async () => {
  * Add event listeners...
  */
 
+app.dock.hide();
 app.on('window-all-closed', () => {
   // Respect the OSX convention of having the application in memory even
   // after all windows have been closed
