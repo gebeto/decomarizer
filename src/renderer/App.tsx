@@ -10,6 +10,7 @@ import {
   Position,
 } from 'evergreen-ui';
 import { ToDoList } from './ToDoList';
+import { addItem, getAllItems } from './store';
 
 const ToDoSection: React.FC<{ label: string }> = ({ label }) => {
   const [isAdding, setIsAdding] = React.useState(false);
@@ -19,7 +20,14 @@ const ToDoSection: React.FC<{ label: string }> = ({ label }) => {
     setTasks([...tasks, addValue]);
     setIsAdding(false);
     setAddValue('');
+    addItem(addValue);
   };
+
+  React.useEffect(() => {
+    const items = getAllItems();
+    setTasks(items);
+  }, []);
+
   return (
     <>
       <Heading size={500}>{label}</Heading>
