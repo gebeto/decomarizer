@@ -20,6 +20,8 @@ class LocalStore<TItem> {
         [key]: value,
       }),
     );
+
+    window.electron.ipcRenderer.sendMessage('create-task', 'Hello world');
   }
 
   delete(key: string) {
