@@ -9,6 +9,7 @@ const ItemCheckbox: React.FC<{
 }> = ({ name, label, onChange, checked }) => {
   return (
     <Checkbox
+      alignItems="center"
       name={name}
       label={label}
       checked={checked[name]}
@@ -24,29 +25,25 @@ const ItemCheckbox: React.FC<{
 
 export const ToDoList: React.FC<{ tasks: string[] }> = ({ tasks }) => {
   const [checked, setChecked] = React.useState<Record<string, boolean>>({});
+  const [taskIndex, setTaskIndex] = React.useState(0);
+
+  const task = React.useMemo(() => {
+    if (tasks.length === 0) {
+      return null;
+    }
+    return tasks[taskIndex];
+  }, [taskIndex, tasks]);
 
   return (
     <Pane>
-      <ItemCheckbox
-        label="Hello world"
-        name="1"
-        checked={checked}
-        onChange={setChecked}
-      />
-      <ItemCheckbox
-        label="Hello world"
-        name="2"
-        checked={checked}
-        onChange={setChecked}
-      />
-      {tasks.map((task) => (
+      {task && (
         <ItemCheckbox
           label={task}
           name={task}
           checked={checked}
           onChange={setChecked}
         />
-      ))}
+      )}
     </Pane>
   );
 };

@@ -77,26 +77,31 @@ const createWindow = async () => {
   };
 
   const primaryDisplay = screen.getPrimaryDisplay();
-  const { width, height } = primaryDisplay.workAreaSize;
+  // const { width, height } = primaryDisplay.workAreaSize;
+
+  const windowHeight =
+    primaryDisplay.size.height - primaryDisplay.workAreaSize.height - 1;
+  // const windowWidth = 770;
+  const windowWidth = 500;
+  const positionX = primaryDisplay.workAreaSize.width - windowWidth - 24;
 
   mainWindow = new BrowserWindow({
-    frame: false,
+    frame: true,
     show: true,
 
-    // transparent: true,
+    transparent: true,
     alwaysOnTop: true,
     resizable: false,
     skipTaskbar: true,
     hasShadow: false,
+    movable: false,
 
     // titleBarStyle: 'customButtonsOnHover',
 
-    // x: 24,
-    x: width - 400 - 24,
-    y: height,
-    width: 400,
-    height: 50,
-    backgroundColor: 'rgba(255, 255, 255, 0.98)',
+    x: positionX,
+    y: primaryDisplay.workAreaSize.height,
+    width: windowWidth,
+    height: windowHeight,
     icon: getAssetPath('icon.png'),
     webPreferences: {
       preload: app.isPackaged
@@ -105,9 +110,8 @@ const createWindow = async () => {
     },
   });
 
-  mainWindow.setVisibleOnAllWorkspaces(true);
-  mainWindow.setPosition(width - 400 - 24, height + 100);
-  // mainWindow.setVisibleOnAllWorkspaces
+  mainWindow.setSize(windowWidth, windowHeight);
+  mainWindow.setPosition(positionX, primaryDisplay.workAreaSize.height);
 
   mainWindow.loadURL(resolveHtmlPath('index.html'));
 

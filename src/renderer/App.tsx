@@ -1,20 +1,15 @@
-import React, { ChangeEvent } from 'react';
+import React from 'react';
 import { MemoryRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
-import {
-  Textarea,
-  Heading,
-  Pane,
-  Button,
-  SideSheet,
-  Position,
-} from 'evergreen-ui';
+import { Pane, Button, SideSheet, Position, TextInput } from 'evergreen-ui';
 import { ToDoList } from './ToDoList';
 import { addItem, getAllItems } from './store';
 
-const ToDoSection: React.FC<{ label: string }> = ({ label }) => {
+const AddToDo: React.FC<{
+  tasks: string[];
+  setTasks: (newTasks: string[]) => void;
+}> = ({ tasks, setTasks }) => {
   const [isAdding, setIsAdding] = React.useState(false);
-  const [tasks, setTasks] = React.useState<string[]>([]);
   const [addValue, setAddValue] = React.useState('');
   const handleAdd = () => {
     setTasks([...tasks, addValue]);
@@ -22,33 +17,22 @@ const ToDoSection: React.FC<{ label: string }> = ({ label }) => {
     setAddValue('');
     addItem(addValue);
   };
-
-  React.useEffect(() => {
-    const items = getAllItems();
-    setTasks(items);
-  }, []);
-
   return (
-    <>
-      <Heading size={500}>{label}</Heading>
-      <ToDoList tasks={tasks} />
+    <Pane border={false} borderLeft padding={16}>
       <Button onClick={() => setIsAdding(true)}>Add task</Button>
       <SideSheet
-        position={Position.BOTTOM}
+        position={Position.LEFT}
         isShown={!!isAdding}
+        width={350}
         onCloseComplete={() => setIsAdding(false)}
       >
-        <Pane padding={8} height="80vh">
-          <Heading size={500} marginBottom={8}>
-            {label}
-          </Heading>
-          <Textarea
+        <Pane padding={8} display="flex" gap={8}>
+          <TextInput
+            flex={1}
+            width="initial"
             value={addValue}
-            onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
-              setAddValue(e.target.value)
-            }
+            onChange={(e) => setAddValue(e.target.value)}
             autoFocus
-            minHeight="auto"
             placeholder="add task"
             onKeyDown={(e) => {
               if (e.metaKey && e.key === 'Enter') {
@@ -56,38 +40,35 @@ const ToDoSection: React.FC<{ label: string }> = ({ label }) => {
               }
             }}
           />
-          <Button width="100%" appearance="primary" onClick={handleAdd}>
+          <Button appearance="primary" onClick={handleAdd}>
             Add
           </Button>
         </Pane>
       </SideSheet>
-    </>
+    </Pane>
   );
 };
 
-function Hello() {
+const ToDoSection: React.FC<{ tasks: string[] }> = ({ tasks }) => {
   return (
-    <Pane display="flex" flexDirection="column">
-      <Pane
-        border="muted"
-        borderTop={false}
-        borderBottom={false}
-        display="flex"
-        flexDirection="column"
-        padding={16}
-      >
-        <ToDoSection label="In Progress" />
-      </Pane>
-      <Pane
-        border="muted"
-        display="flex"
-        flexDirection="column"
-        padding={16}
-        borderBottom={false}
-      >
-        <ToDoSection label="Plan" />
-      </Pane>
-      <Pane height="63px" />
+    <Pane border={false} display="flex" paddingLeft={16} flex={1}>
+      <ToDoList tasks={tasks} />
+    </Pane>
+  );
+};
+
+function Root() {
+  const [tasks, setTasks] = React.useState<string[]>([]);
+
+  React.useEffect(() => {
+    const items = getAllItems();
+    setTasks(items);
+  }, []);
+
+  return (
+    <Pane border={false} display="flex" alignItems="center">
+      <ToDoSection tasks={tasks} />
+      <AddToDo tasks={tasks} setTasks={setTasks} />
     </Pane>
   );
 }
@@ -96,7 +77,7 @@ export default function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Hello />} />
+        <Route path="/" element={<Root />} />
       </Routes>
     </Router>
   );
