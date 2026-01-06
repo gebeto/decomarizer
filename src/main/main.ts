@@ -77,21 +77,26 @@ const createWindow = async () => {
   };
 
   const primaryDisplay = screen.getPrimaryDisplay();
-  const { width } = primaryDisplay.workAreaSize;
+  const { width, height } = primaryDisplay.workAreaSize;
 
   mainWindow = new BrowserWindow({
     frame: false,
-    titleBarStyle: 'customButtonsOnHover',
-    // alwaysOnTop: true,
+    show: true,
+
+    // transparent: true,
+    alwaysOnTop: true,
+    resizable: false,
+    skipTaskbar: true,
+    hasShadow: false,
+
+    // titleBarStyle: 'customButtonsOnHover',
+
     // x: 24,
     x: width - 400 - 24,
-    y: 32,
-    show: false,
+    y: height,
     width: 400,
-    // width: 1024,
-    height: 512,
-    // transparent: true,
-    // backgroundColor: 'rgba(255, 255, 255, 0.98)',
+    height: 50,
+    backgroundColor: 'rgba(255, 255, 255, 0.98)',
     icon: getAssetPath('icon.png'),
     webPreferences: {
       preload: app.isPackaged
@@ -99,6 +104,10 @@ const createWindow = async () => {
         : path.join(__dirname, '../../.erb/dll/preload.js'),
     },
   });
+
+  mainWindow.setVisibleOnAllWorkspaces(true);
+  mainWindow.setPosition(width - 400 - 24, height + 100);
+  // mainWindow.setVisibleOnAllWorkspaces
 
   mainWindow.loadURL(resolveHtmlPath('index.html'));
 
