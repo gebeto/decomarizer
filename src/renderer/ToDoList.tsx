@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Pane, Checkbox } from 'evergreen-ui';
+import { deleteItem } from './store';
 
 const ItemCheckbox: React.FC<{
   label: string;
@@ -41,7 +42,13 @@ export const ToDoList: React.FC<{ tasks: string[] }> = ({ tasks }) => {
           label={task}
           name={task}
           checked={checked}
-          onChange={setChecked}
+          onChange={(v) => {
+            setChecked(v);
+            setTimeout(() => {
+              deleteItem(task);
+              setTaskIndex((idx) => Math.min(idx + 1, tasks.length));
+            }, 1000);
+          }}
         />
       )}
     </Pane>

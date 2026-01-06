@@ -10,16 +10,23 @@ class LocalStore<TItem> {
     this.name = name;
   }
 
-  set(key: string, value: TItem) {
+  set(value: TItem, key: string) {
     const data = JSON.parse(localStorage.getItem(this.name) || '{}');
 
     localStorage.setItem(
-      key,
+      this.name,
       JSON.stringify({
         ...data,
         [key]: value,
       }),
     );
+  }
+
+  delete(key: string) {
+    const data = JSON.parse(localStorage.getItem(this.name) || '{}');
+
+    delete data[key];
+    localStorage.setItem(this.name, JSON.stringify(data));
   }
 
   get(key: string) {
@@ -31,13 +38,17 @@ class LocalStore<TItem> {
   getAll() {
     const data = JSON.parse(localStorage.getItem(this.name) || '{}');
 
-    return Array.from(Object.values(data)) as TItem[];
+    return Array.from(Object.keys(data)) as TItem[];
   }
 }
 const tasksStore = new LocalStore<TaskItem>('tasks');
 
 export const addItem = (item: TaskItem) => {
   tasksStore.set(new Date().toISOString(), item);
+};
+
+export const deleteItem = (item: TaskItem) => {
+  tasksStore.delete(item);
 };
 
 export const getAllItems = (): TaskItem[] => {

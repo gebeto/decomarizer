@@ -14,8 +14,8 @@ const AddToDo: React.FC<{
   const handleAdd = () => {
     setTasks([...tasks, addValue]);
     setIsAdding(false);
-    setAddValue('');
     addItem(addValue);
+    setAddValue('');
   };
   return (
     <Pane border={false} borderLeft padding={16}>
