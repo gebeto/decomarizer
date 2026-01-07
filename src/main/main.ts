@@ -86,13 +86,10 @@ const createWindow = async () => {
   };
 
   const primaryDisplay = screen.getPrimaryDisplay();
-  // const { width, height } = primaryDisplay.workAreaSize;
-
   const windowHeight =
     primaryDisplay.size.height - primaryDisplay.workAreaSize.height - 1;
-  // const windowWidth = 770;
   const windowWidth = 500;
-  const positionX = primaryDisplay.workAreaSize.width - windowWidth - 24;
+  const positionX = primaryDisplay.workAreaSize.width - windowWidth;
 
   mainWindow = new BrowserWindow({
     frame: true,

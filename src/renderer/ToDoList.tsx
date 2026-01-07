@@ -1,5 +1,12 @@
 import * as React from 'react';
-import { Pane, Checkbox } from 'evergreen-ui';
+import {
+  Pane,
+  Checkbox,
+  Heading,
+  ArrowUpIcon,
+  ArrowDownIcon,
+  Card,
+} from 'evergreen-ui';
 import { deleteItem } from './store';
 
 const ItemCheckbox: React.FC<{
@@ -36,20 +43,46 @@ export const ToDoList: React.FC<{ tasks: string[] }> = ({ tasks }) => {
   }, [taskIndex, tasks]);
 
   return (
-    <Pane>
-      {task && (
-        <ItemCheckbox
-          label={task}
-          name={task}
-          checked={checked}
-          onChange={(v) => {
-            setChecked(v);
-            setTimeout(() => {
-              deleteItem(task);
-              setTaskIndex((idx) => Math.min(idx + 1, tasks.length));
-            }, 1000);
-          }}
-        />
+    <Pane display="flex" flex={1} alignItems="center">
+      {task ? (
+        <Card display="flex" alignItems="center" flex={1}>
+          <Card flex={1}>
+            <ItemCheckbox
+              label={task}
+              name={task}
+              checked={checked}
+              onChange={(v) => {
+                setChecked(v);
+                setTimeout(() => {
+                  deleteItem(task);
+                  setTaskIndex((idx) => Math.min(idx + 1, tasks.length));
+                }, 1000);
+              }}
+            />
+          </Card>
+          <Card display="flex" flexDirection="column" paddingRight={8} gap={8}>
+            <ArrowUpIcon
+              color={taskIndex === 0 ? 'gray400' : 'gray800'}
+              size={14}
+              onClick={() =>
+                taskIndex === 0
+                  ? undefined
+                  : setTaskIndex(Math.max(0, taskIndex - 1))
+              }
+            />
+            <ArrowDownIcon
+              color={taskIndex === tasks.length - 1 ? 'gray400' : 'gray800'}
+              size={14}
+              onClick={() =>
+                taskIndex === tasks.length - 1
+                  ? undefined
+                  : setTaskIndex(Math.min(tasks.length, taskIndex + 1))
+              }
+            />
+          </Card>
+        </Card>
+      ) : (
+        <Heading size={100}>No tasks available</Heading>
       )}
     </Pane>
   );
