@@ -3,7 +3,7 @@
 import { contextBridge, ipcRenderer, IpcRendererEvent } from 'electron';
 import fs from 'fs';
 
-export type Channels = 'ipc-example' | 'create-task';
+export type Channels = 'ipc-example' | 'create-task' | 'add-task';
 
 const electronHandler = {
   ipcRenderer: {

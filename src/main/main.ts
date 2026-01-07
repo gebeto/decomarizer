@@ -17,6 +17,7 @@ import {
   ipcMain,
   screen,
   globalShortcut,
+  ipcRenderer,
 } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
@@ -166,6 +167,8 @@ app.on('window-all-closed', () => {
 app.on('ready', () => {
   const sh = globalShortcut.register('Shift+Space', () => {
     mainWindow?.show();
+    // electron.ipcRenderer.send('add-task', 'ping');
+    ipcMain.emit('add-task', 'ss');
   });
   if (!sh) {
     console.log('Registration failed.');

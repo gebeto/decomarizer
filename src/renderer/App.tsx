@@ -42,6 +42,12 @@ const AddToDoInput: React.FC<{
 const AddToDo: React.FC<{
   setIsAdding: (newTasks: boolean) => void;
 }> = ({ setIsAdding }) => {
+  React.useEffect(() => {
+    window.electron.ipcRenderer.once('add-task', () => {
+      // setIsAdding(true);
+      console.log(' >>> ADDD TASK');
+    });
+  }, []);
   return (
     <Pane border={false} borderLeft padding={16}>
       <Button onClick={() => setIsAdding(true)}>Add task</Button>
